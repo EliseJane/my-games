@@ -1,0 +1,84 @@
+.App {
+  position: relative;
+  flex-wrap: wrap;
+  text-align: center;
+  font-family: monospace;
+}
+
+.App * {
+  box-sizing: border-box;
+}
+
+.App-title {
+  font-size: 2em;
+}
+
+.App-intro {
+  font-size: 1.5em;
+  margin: 50px;
+  position: absolute;
+  top: 100px;
+  left: 20%;
+  right: 20%;
+  z-index: 0;
+}
+
+.lisp, .minesweeper, .tictactoe, .deck {
+  cursor: pointer;
+  transition: .5s;
+  font-size: larger;
+}
+
+.lisp, .minesweeper {
+  width: 120px;
+  height: 100vh;
+  padding-top: 200px;
+  position: absolute;
+  z-index: 2;
+}
+
+.lisp {
+  background-color: lightblue;
+  left: 0;
+}
+
+.minesweeper {
+  background-color: lightgreen;
+  right: 0;
+}
+
+.tictactoe, .deck {
+  position: fixed;
+  padding: 50px;
+  height: 120px;
+  width: 100%;
+  z-index: 3;
+}
+
+.tictactoe {
+  bottom: 0;
+  background-color: pink;
+}
+
+.deck {
+  top: 0;
+  background-color: lavender;
+}
+
+.msgame, .lgame, .tttgame, .docgame {
+  visibility: hidden;
+}
+
+.grid {
+  margin-top: 50px;
+  background-color: lightgrey;
+}
+
+.newGame {
+  display: block;
+  padding: 20px;
+  font-family: monospace;
+  font-size: 1em;
+  margin: 20px auto;
+  cursor: pointer;
+}
