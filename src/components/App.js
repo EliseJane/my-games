@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
 import '../App.css';
 import LispPanel from './LispPanel';
 import TicTacToePanel from './TicTacToePanel';
@@ -119,7 +118,7 @@ class App extends Component {
         <TicTacToePanel handleClick={this.ticTacToeClick} />
         <MinesweeperPanel handleClick={this.minesweeperClick} />
         <p className="App-intro">
-          <p className="App-title">My React Games</p>
+          <span className="App-title">My React Games</span>
           I made this single page app and various "games" to review
           technologies and algorithms that have come up in my interview
           process. Enjoy!

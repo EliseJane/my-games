@@ -10,8 +10,8 @@ class TicTacToeGame extends Component {
   }
 
   getMousePosition = (e) => {
-    let grid = document.querySelector('.grid');
-    let rect = grid.getBoundingClientRect();
+    const grid = document.querySelector('.grid');
+    const rect = grid.getBoundingClientRect();
     return {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top
@@ -21,14 +21,12 @@ class TicTacToeGame extends Component {
   handleClick = (e) => {
     e.stopPropagation();
     if (this.state.turn === 'human') {
-      let pos = this.getMousePosition(e);
-      let posX = pos.x;
-      let posY = pos.y;
-      this.clickToSquare(posX, posY);
+      const pos = this.getMousePosition(e);
+      this.humanTurn(pos.x, pos.y);
     }
   }
 
-  clickToSquare = (x, y) => {
+  humanTurn = (x, y) => {
     let row, col;
 
     if (y < 100) {
@@ -47,11 +45,17 @@ class TicTacToeGame extends Component {
       col = 2;
     }
 
-    if (!this.state.grid[row][col]) {
+    if (this.state.grid[row][col] === null) {
       let grid = this.state.grid;
       grid[row][col] = "X";
       this.setState({grid: grid});
       this.stampSquareX(x, y);
+      if (this.win("X")) {
+        this.setState({turn: "humanWin"})
+      } else {
+        this.setState({turn: 'ai'});
+        this.aiTurn();
+      }
     }
   }
 
@@ -68,9 +72,6 @@ class TicTacToeGame extends Component {
     ctx.moveTo(x-20, y+20);
     ctx.lineTo(x+20, y-20);
     ctx.stroke();
-
-    this.setState({turn: 'ai'});
-    this.aiTurn();
   }
 
   aiTurn = () => {
@@ -78,7 +79,7 @@ class TicTacToeGame extends Component {
     if (square !== null) {
       setTimeout(function(square) {
         this.stampSquareO(square)
-      }.bind(this), 2000, square);
+      }.bind(this), 1000, square);
     } else {
       this.setState({turn: 'over'});
     }
@@ -101,12 +102,39 @@ class TicTacToeGame extends Component {
   stampSquareO = (rowcol) => {
     let grid = document.querySelector('.grid');
     let ctx = grid.getContext('2d');
-    let centerX = (rowcol[0]*100) + 50;
-    let centerY = (rowcol[1]*100) + 50;
+    let centerY = (rowcol[0]*100) + 50;
+    let centerX = (rowcol[1]*100) + 50;
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 50, 0, Math.PI * 2, true);
+    ctx.arc(centerX, centerY, 30, 0, Math.PI * 2, true);
     ctx.stroke();
-    this.setState({turn: 'human'});
+    if (this.win("O")) {
+      this.setState({turn: "aiWin"})
+    } else {
+      this.setState({turn: 'human'});
+    }
+  }
+
+  win = (token) => {
+    const grid = this.state.grid;
+    if (grid[0][0] === token && grid[0][1] === token && grid[0][2] === token) {
+      return true;
+    } else if (grid[1][0] === token && grid[1][1] === token && grid[1][2] === token) {
+      return true;
+    } else if (grid[2][0] === token && grid[2][1] === token && grid[2][2] === token) {
+      return true;
+    } else if (grid[0][0] === token && grid[1][0] === token && grid[2][0] === token) {
+      return true;
+    } else if (grid[0][1] === token && grid[1][1] === token && grid[2][1] === token) {
+      return true;
+    } else if (grid[0][2] === token && grid[1][2] === token && grid[2][2] === token) {
+      return true;
+    } else if (grid[0][0] === token && grid[1][1] === token && grid[2][2] === token) {
+      return true;
+    } else if (grid[0][2] === token && grid[1][1] === token && grid[2][0] === token) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   drawGrid = () => {
@@ -145,8 +173,12 @@ class TicTacToeGame extends Component {
       return (<p className='turn'>my turn...</p>);
     } else if (this.state.turn === 'human') {
       return (<p className='turn'>your turn, stamp an empty square</p>);
-    } else {
+    } else if (this.state.turn === 'over') {
       return (<p className='turn'>game over</p>);
+    } else if (this.state.turn === 'aiWin') {
+      return (<p className='turn'>computer won!</p>);
+    } else if (this.state.turn === 'humanWin') {
+      return (<p className='turn'>you won!</p>);
     }
   }
 

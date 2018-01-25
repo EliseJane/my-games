@@ -11,6 +11,8 @@
 
 .App-title {
   font-size: 2em;
+  display: block;
+  padding: 50px;
 }
 
 .App-intro {
@@ -81,4 +83,33 @@
   font-size: 1em;
   margin: 20px auto;
   cursor: pointer;
+}
+
+.expression {
+  background-color: darkblue;
+  color: lightgrey;
+  font-size: 1.5em;
+  margin: 50px;
+  display: block;
+  padding: 20px;
+  height: 70px;
+  position: absolute;
+  left: 15%;
+  right: 15%;
+}
+
+.token {
+  padding: 0 5px;
+}
+
+.tokens {
+  margin-top: 200px;
+}
+
+button {
+  font-size: 1.2em;
+  font-family: monospace;
+  margin: 5px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
 }
