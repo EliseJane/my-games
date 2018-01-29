@@ -17,8 +17,6 @@ class Tokens extends Component {
         <br/>
         <button value="add" onClick={this.props.handleClick}>+</button>
         <button value="sub" onClick={this.props.handleClick}>-</button>
-        <button value="mul" onClick={this.props.handleClick}>x</button>
-        <button value="div" onClick={this.props.handleClick}>/</button>
         <button value="(" onClick={this.props.handleClick}>(</button>
         <button value=")" onClick={this.props.handleClick}>)</button>
         <button value="back" onClick={this.props.handleDelete}>&#8592;</button>
