@@ -75,8 +75,16 @@ class TicTacToeGame extends Component {
   }
 
   aiTurn = () => {
-    let square = this.findBlankSquare();
+    console.log(this.state.grid);
+    let square = this.findWinningSquare("O");
+    if (square === null) {
+      square = this.findWinningSquare("X");
+    }
+    if (square === null) {
+      square = this.findBlankSquare();
+    }
     if (square !== null) {
+      this.markGrid(square);
       setTimeout(function(square) {
         this.stampSquareO(square)
       }.bind(this), 1000, square);
@@ -85,13 +93,34 @@ class TicTacToeGame extends Component {
     }
   }
 
+  markGrid = (square) => {
+    let grid = this.state.grid;
+    grid[square[0]][square[1]] = "O";
+    this.setState({grid: grid});
+  }
+
+  findWinningSquare = (token) => {
+    let grid = this.state.grid;
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[0].length; j++) {
+        if (grid[i][j] === null) {
+          grid[i][j] = token;
+          if (this.win(token, grid)) {
+            return ([i, j]);
+          } else {
+            grid[i][j] = null;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   findBlankSquare = () => {
     let grid = this.state.grid;
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[0].length; j++) {
         if (grid[i][j] === null) {
-          grid[i][j] = "O";
-          this.setState({grid: grid});
           return ([i, j]);
         }
       }
@@ -114,8 +143,7 @@ class TicTacToeGame extends Component {
     }
   }
 
-  win = (token) => {
-    const grid = this.state.grid;
+  win = (token, grid=this.state.grid) => {
     if (grid[0][0] === token && grid[0][1] === token && grid[0][2] === token) {
       return true;
     } else if (grid[1][0] === token && grid[1][1] === token && grid[1][2] === token) {
@@ -193,7 +221,7 @@ class TicTacToeGame extends Component {
           onClick={this.handleClick}
         ></canvas>
         {this.drawGrid()}
-        <button className="newGame" onClick={this.resetGrid}>New Game</button>
+        <button onClick={this.resetGrid}>New Game</button>
       </div>
     );
   }
