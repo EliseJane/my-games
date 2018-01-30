@@ -4,7 +4,7 @@ class DeckOfCardsGame extends Component {
   render() {
     return (
       <div className='docgame'>
-        Insert game here
+        There will be a deck of cards here someday.
       </div>
     );
   }
