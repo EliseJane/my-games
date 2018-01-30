@@ -11,8 +11,14 @@ class MinesweeperGame extends Component {
             [null, null, null, null, null],
             [null, null, null, null, null]
           ],
-      bombs: 0
+      bombs: 0,
+      cards: null,
+      game: ""
     };
+  }
+
+  hitBomb = () => {
+    this.setState({game: "lose"});
   }
 
   handleChange = (e) => {
@@ -31,8 +37,7 @@ class MinesweeperGame extends Component {
     grid = this.setBombs(grid, this.state.bombs);
     grid = this.setFlags(grid);
 
-    this.setState({grid: grid});
-    this.printCards();
+    this.setState({game: "", grid: grid, cards: null}, this.printCards);
   }
 
   setBombs = (grid, bombs) => {
@@ -41,7 +46,7 @@ class MinesweeperGame extends Component {
       let randRow = Math.floor(Math.random() * Math.floor(5));
       let randCol = Math.floor(Math.random() * Math.floor(5));
       if (grid[randRow][randCol] === null) {
-        grid[randRow][randCol] = true;
+        grid[randRow][randCol] = "B";
         bomb++;
       }
     }
@@ -53,28 +58,28 @@ class MinesweeperGame extends Component {
       for (let col = 0; col < 5; col++) {
         if (grid[row][col] === null) {
           let bombs = 0;
-          if (col > 0 && grid[row][col-1] === true) {
+          if (col > 0 && grid[row][col-1] === "B") {
             bombs++;
           }
-          if (col < 4 && grid[row][col+1] === true) {
+          if (col < 4 && grid[row][col+1] === "B") {
             bombs++;
           }
-          if (row > 0 && grid[row-1][col] === true) {
+          if (row > 0 && grid[row-1][col] === "B") {
             bombs++;
           }
-          if (row < 4 && grid[row+1][col] === true) {
+          if (row < 4 && grid[row+1][col] === "B") {
             bombs++;
           }
-          if (row > 0 && col > 0 && grid[row-1][col-1] === true) {
+          if (row > 0 && col > 0 && grid[row-1][col-1] === "B") {
             bombs++;
           }
-          if (row < 4 && col > 0 && grid[row+1][col-1] === true) {
+          if (row < 4 && col > 0 && grid[row+1][col-1] === "B") {
             bombs++;
           }
-          if (row < 4 && col < 4 && grid[row+1][col+1] === true) {
+          if (row < 4 && col < 4 && grid[row+1][col+1] === "B") {
             bombs++;
           }
-          if (row > 0 && col < 4 && grid[row-1][col+1] === true) {
+          if (row > 0 && col < 4 && grid[row-1][col+1] === "B") {
             bombs++;
           }
           grid[row][col] = bombs;
@@ -91,12 +96,13 @@ class MinesweeperGame extends Component {
       for (let col = 0; col < 5; col++) {
         squares.push(<MsSquare
           back={grid[row][col]}
+          hitBomb={this.hitBomb}
           flipped="false"
           key={(row+1)*(col+10)}
         />);
       }
     }
-    return squares;
+    this.setState({cards: squares});
   }
 
   stop = (e) => {
@@ -104,8 +110,10 @@ class MinesweeperGame extends Component {
   }
 
   render() {
+    let cn = "bomb ".concat(this.state.game);
     return (
       <div className='msgame'>
+        <img className={cn} src="bomb.jpeg" alt="bomb" />
         <p>Avoid the bombs!</p>
         <form onClick={this.stop} onSubmit={this.createGrid} id='todo'>
           <select onChange={this.handleChange}>
@@ -122,7 +130,7 @@ class MinesweeperGame extends Component {
           </select>
           <input type='submit' value='New Game' />
         </form>
-        {this.printCards()}
+        {this.state.cards}
       </div>
     );
   }

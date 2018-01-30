@@ -7,34 +7,50 @@ class LispGame extends Component {
     super(props);
     this.state = {
       tokens: [],
-      error: null
+      error: "operator then two operands"
     };
   }
-// add (add 2 3) (sub 3 1)  =  gives 5, should give 7
-// add ( sub 4 1 ) 9  =  gives -6, should give 12
-  processLisp = (tokens=this.state.tokens, stack=[]) => {
-    let i = tokens.length - 1; // last index
-    let subproblem = []; // in case parentheses are encountered
 
-    while (i >= 0) { // until the first index
-      if ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9].includes(Number(tokens[i]))) {  // if token is an operand
-        stack.push(Number(tokens[i]));  // add it to the stack
-      } else if (tokens[i] === "add") { // if token is add
-        stack.push(stack.pop() + stack.pop()); // pop 2 off the stack and add sum to stack
-      } else if (tokens[i] === "sub") { // if token is sub
-        stack.push(stack.pop() - stack.pop()); // pop 2 off the stack and add difference to stack
-      } else if (tokens[i] === ")") { // if close parenthesis, from here to open parenthesis will be subproblem
-        i-- // skip it
-        while (tokens[i] !== "(") { // as long as we're in the subproblem
-          subproblem.unshift(tokens[i]); // add to beginning of subproblem
-          i--; // and move back one
+  processLisp = (tokens=this.state.tokens, stack=[]) => {
+    let numStack = [];
+    let opStack = [];
+
+    tokens.forEach((token => {
+      if (!isNaN(Number(token))) {
+        numStack.push(Number(token));
+      } else if (token === ')') {
+        while (opStack[opStack.length-1] !== '(') {
+          let op = opStack.pop();
+          let num2 = numStack.pop();
+          let num1 = numStack.pop();
+          numStack.push(this.applyOp(num1, num2, op));
         }
-        this.processLisp(subproblem, stack); // then process subproblem, ultimately adding result to original stack
-        subproblem = [];
+        opStack.pop();
+      } else {
+        opStack.push(token);
       }
-      i--; // go back an index
+    }));
+
+    while (numStack.length > 1) {
+      let op = opStack.pop();
+      let num1 = numStack.pop();
+      let num2 = numStack.pop();
+      numStack.push(this.applyOp(num1, num2, op));
     }
-    this.setState({tokens: stack});
+
+    if (numStack.length === 0 || isNaN(numStack[0])) {
+      this.setState({error: "invalid expression"});
+    } else {
+      this.setState({tokens: numStack, error: "operator then two operands"});
+    }
+  }
+
+  applyOp = (num1, num2, op) => {
+    if (op === 'add') {
+      return num1 + num2;
+    } else if (op === 'sub') {
+      return num1 - num2;
+    }
   }
 
   tokenClick = (e) => {
@@ -61,6 +77,7 @@ class LispGame extends Component {
       <div className='lgame'>
         enter your expression, press = to compute
         <Expression tokens={this.state.tokens} />
+        <p className='error'>{this.state.error}</p>
         <Tokens handleDelete={this.backspaceClick} handleClick={this.tokenClick} handleSubmit={this.equalClick} />
       </div>
     );

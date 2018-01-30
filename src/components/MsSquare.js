@@ -9,18 +9,21 @@ class MsSquare extends Component {
   handleClick = (e) => {
     e.stopPropagation();
     this.setState({flipped: 'true'});
+    if (this.props.back === "B") {
+      this.props.hitBomb();
+    }
   }
 
   render() {
-    const cn = this.state.flipped === 'true' ? 'card flip' : 'card';;
+    const cn = this.state.flipped === 'true' ? 'card flip' : 'card';
     return (
       <div className='square' onClick={this.handleClick}>
         <div className={cn}>
           <div className='front'>
-            <strong>?</strong>
+            ?
           </div>
           <div className='back'>
-            <strong>{this.props.back}</strong>
+            {this.props.back}
           </div>
         </div>
       </div>
