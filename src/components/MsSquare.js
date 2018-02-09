@@ -12,6 +12,7 @@ class MsSquare extends Component {
     if (this.props.back === "B") {
       this.props.hitBomb();
     }
+    this.props.increaseFlipped();
   }
 
   render() {

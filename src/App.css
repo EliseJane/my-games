@@ -179,13 +179,17 @@
   margin: 140px 0 0 0;
 }
 
-.bomb {
+.msg {
   visibility: hidden;
   z-index: 3;
   position: absolute;
   width: 50%;
 }
 
-.lose {
+.lose, .win {
   visibility: visible;
+}
+
+.win {
+  font-size: 3em;
 }

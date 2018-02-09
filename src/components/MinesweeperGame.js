@@ -12,6 +12,7 @@ class MinesweeperGame extends Component {
             [null, null, null, null, null]
           ],
       bombs: 0,
+      uncovered: 24,
       cards: null,
       game: ""
     };
@@ -19,6 +20,17 @@ class MinesweeperGame extends Component {
 
   hitBomb = () => {
     this.setState({game: "lose"});
+  }
+
+  increaseFlipped = () => {
+    this.setState({uncovered: this.state.uncovered - 1});
+    this.checkIfWon();
+  }
+
+  checkIfWon = () => {
+    if (this.state.uncovered === this.state.bombs) {
+      this.setState({game: 'win'});
+    }
   }
 
   handleChange = (e) => {
@@ -37,7 +49,7 @@ class MinesweeperGame extends Component {
     grid = this.setBombs(grid, this.state.bombs);
     grid = this.setFlags(grid);
 
-    this.setState({game: "", grid: grid, cards: null}, this.printCards);
+    this.setState({game: "", grid: grid, cards: null, uncovered: 24}, this.printCards);
   }
 
   setBombs = (grid, bombs) => {
@@ -99,6 +111,7 @@ class MinesweeperGame extends Component {
           hitBomb={this.hitBomb}
           flipped="false"
           key={(row+1)*(col+10)}
+          increaseFlipped={this.increaseFlipped}
         />);
       }
     }
@@ -110,11 +123,19 @@ class MinesweeperGame extends Component {
   }
 
   render() {
-    let cn = "bomb ".concat(this.state.game);
+    let winCN = "msg ";
+    let loseCN = "msg ";
+    if(this.state.game === 'win') {
+      winCN = winCN.concat(this.state.game);
+    } else if (this.state.game === 'lose') {
+      loseCN = loseCN.concat(this.state.game);
+    }
+
     return (
       <div className='msgame'>
-        <img className={cn} src="bomb.jpeg" alt="bomb" />
+        <img className={loseCN} src="bomb.jpeg" alt="bomb" />
         <p>Avoid the bombs!</p>
+        <div className={winCN}>You won!!!</div>
         <form onClick={this.stop} onSubmit={this.createGrid} id='todo'>
           <select onChange={this.handleChange}>
             <option value='1'>1 bomb</option>
