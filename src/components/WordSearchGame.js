@@ -1,40 +1,30 @@
 import React, { Component } from 'react';
+import { grid1, words1 } from '../wordSearches/test1';
+import { grid2, words2 } from '../wordSearches/test2';
 
 class WordSearchGame extends Component {
   constructor () {
     super();
 
     this.state = {
-      grid: [],
-      words: []
+      grid: null,
+      words: null,
+      game: false
     }
   }
 
   testCase1 = () => {
     this.setState({
-      grid:['ELEKTRAHTHORGV',
-            'SILVERAORWTNSH',
-            'AUAUAWREHSINUP',
-            'HNERKCTNWHAMRR',
-            'AFTEHSIITMASFA',
-            'ICYMILDRRNCAEA',
-            'IEIMAOIEEAERRL',
-            'WWYTWNDVRMGEIO',
-            'INVIDIBLEGAGRO',
-            'TDHSPAEOHDCNOP',
-            'CIOSKTTzTGEAND',
-            'HFKOKPRNNLKRMA',
-            'EBWOMANPAEUTAE',
-            'UOFALCONPFLSND'],
-      words: ['ANTMAN',
-              'DAREDEVIL',
-              'DEADPOOL',
-              'ELEKTRA',
-              'HAWKEYE',
-              'PUNISHER',
-              'THING',
-              'WITCH']
-    });
+      grid: grid1,
+      words: words1,
+    }, this.runWS);
+  }
+
+  testCase2 = () => {
+    this.setState({
+      grid: grid2,
+      words: words2,
+    }, this.runWS);
   }
 
   runWS = () => {
@@ -145,11 +135,10 @@ class WordSearchGame extends Component {
   }
 
   render() {
-    if (this.state.grid.length > 0) this.runWS();
-
     return (
       <div className='wsgame'>
         <button onClick={this.testCase1}>Run test 1</button>
+        <button onClick={this.testCase2}>Run test 2</button>
       </div>
     );
   }
