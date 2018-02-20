@@ -3,7 +3,7 @@ import '../App.css';
 import LispPanel from './LispPanel';
 import TicTacToePanel from './TicTacToePanel';
 import MinesweeperPanel from './MinesweeperPanel';
-import DeckOfCardsPanel from './DeckOfCardsPanel';
+import WordSearchPanel from './WordSearchPanel';
 
 class App extends Component {
   constructor(props) {
@@ -12,31 +12,31 @@ class App extends Component {
       lisp: false,
       minesweeper: false,
       tictactoe: false,
-      deck: false
+      wordsearch: false
     };
   }
 
-  deckOfCardsClick = () => {
-    if (this.state.deck === false) {
+  wordSearchClick = () => {
+    if (this.state.wordsearch === false) {
       this.setState({minesweeper: false}, this.closeMinesweeper);
       this.setState({tictactoe: false}, this.closeTicTacToe);
       this.setState({lisp: false}, this.closeLisp);
-      this.setState({deck: true}, this.openDeckOfCards);
+      this.setState({wordsearch: true}, this.openWordSearch);
     } else {
-      this.setState({deck: false}, this.closeDeckOfCards);
+      this.setState({wordsearch: false}, this.closeWordSearch);
     }
   }
 
-  openDeckOfCards = () => {
-    document.querySelector('.deck').style.zIndex = '1';
-    document.querySelector('.deck').style.height = '100%';
-    document.querySelector('.docgame').style.visibility = "visible";
+  openWordSearch = () => {
+    document.querySelector('.wordsearch').style.zIndex = '1';
+    document.querySelector('.wordsearch').style.height = '100%';
+    document.querySelector('.wsgame').style.visibility = "visible";
   }
 
-  closeDeckOfCards = () => {
-    document.querySelector('.deck').style.zIndex = '3';
-    document.querySelector('.deck').style.height = '120px';
-    document.querySelector('.docgame').style.visibility = "hidden";
+  closeWordSearch = () => {
+    document.querySelector('.wordsearch').style.zIndex = '3';
+    document.querySelector('.wordsearch').style.height = '120px';
+    document.querySelector('.wsgame').style.visibility = "hidden";
   }
 
   lispClick = () => {
@@ -113,7 +113,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <DeckOfCardsPanel handleClick={this.deckOfCardsClick} />
+        <WordSearchPanel handleClick={this.wordSearchClick} />
         <LispPanel handleClick={this.lispClick} />
         <TicTacToePanel handleClick={this.ticTacToeClick} />
         <MinesweeperPanel handleClick={this.minesweeperClick} />

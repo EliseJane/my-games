@@ -25,7 +25,7 @@
   z-index: 0;
 }
 
-.lisp, .minesweeper, .tictactoe, .deck {
+.lisp, .minesweeper, .tictactoe, .wordsearch {
   cursor: pointer;
   transition: .5s;
   font-size: larger;
@@ -49,7 +49,7 @@
   right: 0;
 }
 
-.tictactoe, .deck {
+.tictactoe, .wordsearch {
   position: fixed;
   padding: 50px;
   height: 120px;
@@ -62,12 +62,12 @@
   background-color: pink;
 }
 
-.deck {
+.wordsearch {
   top: 0;
   background-color: lavender;
 }
 
-.msgame, .lgame, .tttgame, .docgame {
+.msgame, .lgame, .tttgame, .wsgame {
   visibility: hidden;
 }
 
