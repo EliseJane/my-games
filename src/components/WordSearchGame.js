@@ -139,6 +139,7 @@ class WordSearchGame extends Component {
       <div className='wsgame'>
         <button onClick={this.testCase1}>Run test 1</button>
         <button onClick={this.testCase2}>Run test 2</button>
+        <p>Someday there will be a visual representation of the word search grid here.</p>
       </div>
     );
   }
